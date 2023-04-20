@@ -1,0 +1,62 @@
+{
+  "name": "on-frame-throttled",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/christiandewit/on-frame-throttled"
+  },
+  "description": "Throttles requestAnimationFrame by a given framerate",
+  "main": "./dist/on-frame-throttled.umd.cjs",
+  "module": "./dist/on-frame-throttled.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/on-frame-throttled.mjs",
+      "require": "./dist/on-frame-throttled.umd.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run format && npm run lint",
+    "preversion": "npm run format && npm run lint",
+    "build": "vite build",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "test": "vitest run --reporter verbose",
+    "coverage": "vitest run --coverage",
+    "bench": "vitest bench --run"
+  },
+  "keywords": [
+    "raf",
+    "requestAnimationFrame",
+    "onFrameThrottled",
+    "animation",
+    "fps",
+    "throttle",
+    "performance"
+  ],
+  "author": {
+    "name": "Christian de Wit",
+    "email": "mail@christiandewit.com"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.58.0",
+    "@typescript-eslint/parser": "^5.58.0",
+    "@vitest/coverage-c8": "^0.30.1",
+    "eslint": "^8.38.0",
+    "eslint-config-prettier": "^8.8.0",
+    "jsdom": "^21.1.1",
+    "prettier": "^2.8.7",
+    "typescript": "^5.0.4",
+    "vite": "^4.2.2",
+    "vite-plugin-dts": "^2.3.0",
+    "vitest": "^0.30.1"
+  },
+  "dependencies": {
+    "@amate/on-frame": "^1.0.2"
+  }
+}
