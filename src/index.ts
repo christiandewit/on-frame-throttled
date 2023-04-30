@@ -28,12 +28,15 @@ export function onFrameThrottled(fps: number, subscriber: FrameRequestCallback, 
 function createFrameThrottler(fps: number, onCleanup?: () => void) {
   const subscribers = new Set<FrameRequestCallback>();
   const interval = 1000 / fps;
+  // we take into account that the browser might trigger too early
+  // the value of 1 (ms) is arbitrary, but should suffice
+  const tolerance = 1;
 
   let previousTime: number | null = null;
   let unsubscribeFrame: ReturnType<typeof onFrame> | null = null;
 
   function frameCallback(time: DOMHighResTimeStamp) {
-    // always invoke the first time
+    //  invoke the first time
     if (previousTime === null) {
       invokeSubscribers(time);
       previousTime = time;
@@ -41,8 +44,17 @@ function createFrameThrottler(fps: number, onCleanup?: () => void) {
     }
 
     const delta = time - previousTime;
+
+    // invoke if we are past the interval
     if (delta >= interval) {
       previousTime = time - (delta % interval);
+      invokeSubscribers(time);
+      return;
+    }
+
+    // invoke if we are close to the interval
+    if (delta >= interval - tolerance) {
+      previousTime = time - (delta - interval);
       invokeSubscribers(time);
     }
   }
